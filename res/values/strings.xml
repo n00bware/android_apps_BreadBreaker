@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- JBitesGUI app strings -->
+    <string name="app_name">BreadBreaker</string>
+    <string name="stat_text">Welcome to BreadBreaker</string>
+
+    <string name="step_1_button_text">Step One</string>
+    <string name="step_2_button_text">Step Two</string>
+
+<!-- string template
+
+    <string name=""></string>
+
+-->
+
+</resources>
