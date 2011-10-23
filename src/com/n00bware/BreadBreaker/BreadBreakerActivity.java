@@ -27,16 +27,20 @@ public class BreadBreakerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        TextView status = (TextView)findViewById(R.id.tv_stat);
+        final TextView status = (TextView)findViewById(R.id.tv_stat);
         status.setText("Hello and Welcome to BreadBreaker");
 
         Button mStepOne = (Button)findViewById(R.id.btn_step_1);
         mStepOne.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                unzipPayload();
-
-                //do work
+                status.setText("Starting step one");
+                StringBuilder step_one = new StringBuilder();
+                Bin.runCmd("if [ -e /data/local/12m.bak ]; then rm /data/local/12m.bak; fi");
+                step_one.append("mv /data/local/12m /data/local/12m.bak ; ");
+                step_one.append("ln -s /data /data/local/12m ; ");
+                Bin.runCmd(step_one.toString());
+                status.setText("We are done with step 1 ...please reboot");
             }
         });
 
@@ -44,9 +48,55 @@ public class BreadBreakerActivity extends Activity {
         mStepTwo.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //do work
+                status.setText("Starting step two");
+                StringBuilder step_two = new StringBuilder();
+                step_two.append("rm /data/local/12m ; ");
+                step_two.append("mv /data/local/12m.bak /data/local/12m ; ");
+                Bin.runCmd(step_two.toString());
+                Bin.runCmd("if [ -e /data/local.prop.bak ]; then rm /data/local.prop.bak; fi");
+                Bin.runCmd("mv /data/local.prop /data/local.prop.bak");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_netmon_usb=0\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_netmon_ih=0\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_res_core=0\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_res_panic=0\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_all_adb=1\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_all_core=0\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_efem=0\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_bp_log=0\" > /data/local.prop");
+                Bin.runCmd("echo \"ro.sys.atvc_allow_ap_mot_log=0\" > /data/local.prop");
+                Bin.runCmd("echo \"rro.sys.atvc_allow_gki_log=0\" > /data/local.prop");
+                status.setText("Step two complete reboot now");
+
             }
         });
+        Button mStepThree = (Button)findViewById(R.id.btn_step_3);
+        mStepThree.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unzipPayload();
+
+                String filesDir = getFilesDir().getAbsolutePath();
+                String busybox = filesDir + "/payload/busybox";
+                String su = filesDir + "/payload/su";
+                String su_apk = filesDir + "/payload/Superuser.apk";
+
+
+                StringBuilder step_three = new StringBuilder();
+                status.setText("attempting to install busybox and su binary");
+                step_three.append("cp -rf " + busybox + " /system/xbin/busybox ; ");
+                step_three.append("cp -rf " + su + " /system/xbin/su ; ");
+                Bin.runCmd(step_three.toString());
+                Bin.runCmd("install " + su_apk);
+                Bin.runCmd("chmod 4755 /system/xbin/su");
+                Bin.runCmd("chmod 755 /system/xbin/busybox");
+                Bin.runCmd("/system/xbin/busybox --install -s /system/xbin/");
+                Bin.runCmd("ln -s /system/xbin/su /system/bin/su");
+                Bin.runCmd("chown system.system /data");
+                status.setText("...and done your phone should be rooted now");
+                
+            }
+        });
+
     }
 
     final static String ZIP_FILTER = "assets";

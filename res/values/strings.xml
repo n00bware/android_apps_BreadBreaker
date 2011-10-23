@@ -2,11 +2,12 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- JBitesGUI app strings -->
-    <string name="app_name">BreadBreaker</string>
+    <string name="app_name">BreadBreaker by n00bware</string>
     <string name="stat_text">Welcome to BreadBreaker</string>
 
     <string name="step_1_button_text">Step One</string>
     <string name="step_2_button_text">Step Two</string>
+    <string name="step_3_button_text">Final Step</string>
 
 <!-- string template
 

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/background">
+    android:layout_height="fill_parent">
+    <!--android:background="@drawable/background"-->
 
     <TextView android:text="@string/stat_text"
         android:id="@+id/tv_stat"
@@ -22,6 +22,14 @@
 
     <Button android:text="@string/step_2_button_text"
         android:id="@+id/btn_step_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp">
+    </Button>
+
+    <Button android:text="@string/step_3_button_text"
+        android:id="@+id/btn_step_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
